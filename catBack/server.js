@@ -7,6 +7,7 @@ const {
   updateGameState,
   initialState,
 } = require("./utils/gameState.js");
+const { resetPlayerState } = require("./utils/socketManager.js");
 
 // SERVER
 const app = express();
@@ -17,6 +18,10 @@ const io = socketIo(server, {
     method: ["GET", "POST"],
   },
 });
+
+function updateAllClients() {
+  io.emit("game-update", gameState);
+}
 
 // GAME
 let playerCount = 0;
@@ -34,37 +39,30 @@ io.on("connection", (socket) => {
   playerCount++;
 
   if (playerCount === 1) {
-    gameState.moka.player = 1;
+    gameState.moka.player = socket.id;
   } else {
-    console.log("hello");
-    updateGameState({
-      moka: {
-        pos: { x: gameState.moka.pos.x, y: gameState.moka.pos.y },
-        catName: "moka",
-        player: 1,
-      },
-      aslan: {
-        pos: { x: gameState.moka.pos.x, y: gameState.aslan.pos.y },
-        catName: "aslan",
-        player: 2,
-      },
-    });
+    gameState.aslan.player = socket.id;
   }
+
   socket.emit("assign-player", {
     player: PLAYER[playerCount],
     gameState: gameState,
   });
 
-  socket.on("action", (data) => {
+  /*  socket.on("action", (data) => {
     io.emit("updateSprites", { player: PLAYER[playerCount], action: data });
-  });
+  }); */
 
-  socket.emit("game-update", gameState);
-
-  socket.on("disconnect", () => {
+  socket.on("disconnect", (reason, details) => {
+    console.log(details);
     console.log("Client disconnected");
     playerCount--;
+
+    resetPlayerState(socket.id);
+    updateAllClients();
   });
+
+  io.emit("game-update", gameState);
 });
 
 const PORT = process.env.PORT || 3000;
