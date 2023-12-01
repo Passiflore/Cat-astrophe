@@ -1,4 +1,4 @@
-import { moka, aslan } from './spriteManager';
+import { moka, aslan, bonus } from './spriteManager';
 import { KEY_CODES } from '../utils/constants';
 import { app } from './app';
 import { shootProjectile } from './bulletManager';
@@ -40,6 +40,7 @@ export function updateSprites() {
     if (keys[KEY_CODES.DOWN]) {
         moka.y += speed;
         lastDirection = { x: 0, y: 1 };
+        
     }
     if (keys[KEY_CODES.LEFT]) { 
         moka.x -= speed;
@@ -64,12 +65,11 @@ export function updateSprites() {
         aslan.x += speed;
     }
 
-
+    // Keep Moka and Aslan in the screen
     moka.x = Math.max(moka.width / 2, Math.min(app.screen.width - moka.width / 2, moka.x));
     moka.y = Math.max(moka.height / 2, Math.min(app.screen.height - moka.height / 2, moka.y));
 
     aslan.x = Math.max(aslan.width / 2, Math.min(app.screen.width - aslan.width / 2, aslan.x));
     aslan.y = Math.max(aslan.height / 2, Math.min(app.screen.height - aslan.height / 2, aslan.y));
-
 
 }
