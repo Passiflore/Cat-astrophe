@@ -16,7 +16,7 @@ export function setupInputHandling() {
 
 function onKeyDown(e) {
   keys[e.keyCode] = true;
-  socket.emit("action", { action: e.code });
+  socket.emit("action", { action: e.code, player: socket.id });
 
   const currentTime = Date.now();
   if (keys[KEY_CODES.T] && currentTime - lastShotTime > shotCooldown) {
@@ -32,23 +32,5 @@ function onKeyUp(e) {
 let lastDirection = { x: 0, y: 0 };
 
 export function updateSprites(playerState, { action }) {
-  let speed = 15;
-  const playerPos = playerState.pos;
-  console.log("action: ", action);
-
-  if (action === "ArrowUp") {
-    playerPos.y -= speed;
-  }
-  if (action === "ArrowDown") {
-    playerPos.y += speed;
-  }
-  if (action === "ArrowLeft") {
-    playerPos.x -= speed;
-  }
-  if (action === "ArrowRight") {
-    console.log("right");
-    playerPos.x += speed;
-  }
-
   console.log(playerState);
 }

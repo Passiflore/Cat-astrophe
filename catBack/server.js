@@ -7,7 +7,10 @@ const {
   updateGameState,
   initialState,
 } = require("./utils/gameState.js");
-const { resetPlayerState } = require("./utils/socketManager.js");
+const {
+  resetPlayerState,
+  updatePlayerPositionById,
+} = require("./utils/socketManager.js");
 
 // SERVER
 const app = express();
@@ -21,6 +24,7 @@ const io = socketIo(server, {
 
 function updateAllClients() {
   io.emit("game-update", gameState);
+  console.log(gameState);
 }
 
 // GAME
@@ -49,9 +53,10 @@ io.on("connection", (socket) => {
     gameState: gameState,
   });
 
-  /*  socket.on("action", (data) => {
-    io.emit("updateSprites", { player: PLAYER[playerCount], action: data });
-  }); */
+  socket.on("action", (data) => {
+    updatePlayerPositionById(data.player, data.action);
+    updateAllClients();
+  });
 
   socket.on("disconnect", (reason, details) => {
     console.log(details);
@@ -62,7 +67,7 @@ io.on("connection", (socket) => {
     updateAllClients();
   });
 
-  io.emit("game-update", gameState);
+  updateAllClients();
 });
 
 const PORT = process.env.PORT || 3000;

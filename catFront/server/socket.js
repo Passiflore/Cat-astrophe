@@ -26,15 +26,6 @@ socket.on("assign-player", ({ player, gameState }) => {
   Object.assign(localGameState, gameState);
 });
 
-/* socket.on("updateSprites", (data) => {
-  console.log("updateSprites: ", data);
-  if (data.player === gameState.localPlayers.sprite) {
-    updateSprites(gameState.localPlayers, data.action);
-  } else {
-    updateSprites(gameState.remotePlayers, data.action);
-  }
-}); */
-
 socket.on("game-update", (gameState) => {
   console.log("gameState UPDATED: ", gameState);
   Object.assign(localGameState, gameState);
