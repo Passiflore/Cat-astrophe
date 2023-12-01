@@ -6,6 +6,7 @@ export const KEY_CODES = {
     Z: 90,
     S: 83,
     Q: 81,
-    D: 68
+    D: 68,
+    T: 84
 
 };

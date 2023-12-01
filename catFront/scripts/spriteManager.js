@@ -31,3 +31,13 @@ export function setupSprites() {
     app.stage.addChild(bonus);
 
 }
+
+export function createProjectile() {
+    const projectile = PIXI.Sprite.from('img/balle.png');
+    projectile.anchor.set(0.5, 0.5);
+
+    projectile.scale.x = 0.05;
+    projectile.scale.y = 0.05;
+
+    return projectile;
+}
