@@ -1,9 +1,13 @@
 import { aslan, moka, setupSprites } from "./spriteManager";
-import { setupInputHandling, updateSprites } from "./inputHandler";
-import { positionBonusRandomly } from "./bonusManager";
-import { app } from "./app";
+import { setupSprites } from './spriteManager';
+import { setupInputHandling, updateSprites } from './inputHandler';
+import { positionBonusRandomly } from './bonusManager';
+import { app } from './app'
 import { updateProjectiles } from "./bulletManager";
 import { localGameState } from "./localGameState";
+import { PlayerBonusCollision } from './PlayerBonusCollision';
+import { moka, aslan, bonus } from './spriteManager';
+
 
 export function startGame() {
   setupSprites();
@@ -11,6 +15,9 @@ export function startGame() {
 
   app.ticker.add((delta) => {
     updateProjectiles(app);
+    if (bonus.visible) {
+      PlayerBonusCollision(moka, bonus);
+    }
 
     if (localGameState.moka && localGameState.aslan && moka && aslan) {
       // Moka Player Update

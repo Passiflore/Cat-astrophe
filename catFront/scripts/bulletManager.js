@@ -11,11 +11,11 @@ export function shootProjectile(app, fromSprite, direction) {
         const projectile = createProjectile();
         projectile.position.set(fromSprite.x, fromSprite.y);
         app.stage.addChild(projectile);
-        projectiles.push(projectile);
     
         console.log(direction)
     
         projectile.direction = direction || { x: 0, y: 0 };
+        projectile.rotation = Math.atan2(projectile.direction.y, projectile.direction.x) + Math.PI / 2;
         projectiles.push(projectile);
 
         numberProjectile--;
@@ -34,13 +34,14 @@ export function updateProjectiles(app) {
 
         // Collision avec les bords gauche et droit
         if (projectile.x <= 0 || projectile.x >= app.screen.width) {
-            console.log(testCompteur)
+
             if(testCompteur > 1){
                 app.stage.removeChild(projectile);
                 projectiles.splice(index, 1);
                 testCompteur = 0
             }else {
-                projectile.direction.x *= -1;  // Inverser la direction en X
+                projectile.direction.x *= -1;
+                projectile.rotation = Math.atan2(projectile.direction.y, projectile.direction.x) + Math.PI / 2;// Inverser la direction en X
                 testCompteur = ++testCompteur
             }
         }
@@ -52,14 +53,10 @@ export function updateProjectiles(app) {
                 projectiles.splice(index, 1);
                 testCompteur = 0
             }else{
-                projectile.direction.y *= -1;  // Inverser la direction en Y
+                projectile.direction.y *= -1;
+                projectile.rotation = Math.atan2(projectile.direction.y, projectile.direction.x) + Math.PI / 2;
                 testCompteur = ++testCompteur
             }
         }
-
-        // if (projectile.x > app.screen.width) {
-        //     app.stage.removeChild(projectile);
-        //     projectiles.splice(index, 1);
-        // }
     });
 }

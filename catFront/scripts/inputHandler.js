@@ -1,4 +1,4 @@
-import { moka, aslan } from "./spriteManager";
+import { moka, aslan, bonus} from "./spriteManager";
 import { KEY_CODES } from "../utils/constants";
 import { app } from "./app";
 import { shootProjectile } from "./bulletManager";
